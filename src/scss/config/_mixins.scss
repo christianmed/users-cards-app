@@ -1,0 +1,23 @@
+// Devuelve propiedad: valor y propiedad: CSS Var
+@mixin var($property, $var) {
+  #{$property}: map-get($vars, $var);
+  #{$property}: var(--#{$var});
+}
+
+
+// Devuelve font-family
+@mixin font($font) {
+  font-family: map-get($vars,font), sans-serif;
+}
+
+// Devuelve fontweight
+@mixin fontWeight($weight) {
+  font-weight: map-get($fontWeights,$weight);
+}
+
+// Devuelve media query
+@mixin from($breakpoint) {
+  @media screen and (min-width: map-get($breakpoints,$breakpoint)) {
+    @content;
+  }
+};

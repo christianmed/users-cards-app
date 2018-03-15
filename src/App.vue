@@ -23,24 +23,39 @@ export default {
     AppFooter
   },
   mounted() {
+    // Axios.get(
+    //   "https://randomuser.me/api/?results=120&inc=name,picture,dob,location,phone&nat=us"
+    // ).then(res => {
+    //   let all = res.data.results;
+    //   let us = [];
+    //   let u = {};
+
+    //   for (let i = 0; i < all.length; i++) {
+    //     u = {
+    //       photo: all[i].picture.large,
+    //       fullName: all[i].name.first + " " + all[i].name.last,
+    //       birthday: all[i].dob.split(" ", 1).toString(),
+    //       address: all[i].location.street,
+    //       phone: all[i].phone
+    //     };
+    //     us.push(u);
+    //   }
+    //   this.users = us;
+    // });
     Axios.get(
       "https://randomuser.me/api/?results=120&inc=name,picture,dob,location,phone&nat=us"
     ).then(res => {
-      let all = res.data.results;
-      let us = [];
-      let u = {};
-
-      for (let i = 0; i < all.length; i++) {
-        u = {
-          photo: all[i].picture.large,
-          fullName: all[i].name.first + " " + all[i].name.last,
-          birthday: all[i].dob.split(" ", 1).toString(),
-          address: all[i].location.street,
-          phone: all[i].phone
+      console.log(res.data.results);
+      const array = res.data.results.map(user => {
+        return {
+          fullName: `${user.name.first} ${user.name.last}`,
+          birthday: user.dob.split(" ", 1).toString(),
+          address: user.location.state,
+          phone: user.phone,
+          photo: user.picture.large
         };
-        us.push(u);
-      }
-      this.users = us;
+      });
+      this.users = array;
     });
   },
   data() {

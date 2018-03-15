@@ -1,8 +1,9 @@
 <template>
   <div class="app">
     <AppHeader :title="title" :subtitle="subtitle"/>
+    <input v-model="search" class="search" type="text" placeholder="Search User by Name">
     <section class="Cards">
-      <UserCard :users="users" :user="user" v-for="(user, key) in users" :key="key" />
+      <UserCard :user="user" v-for="(user, key) in filteredByName" :key="key" />
     </section>
     <AppFooter :copyright="copyright"/>
   </div>
@@ -23,7 +24,7 @@ export default {
   },
   mounted() {
     Axios.get(
-      "https://randomuser.me/api/?results=12&inc=name,picture,dob,location,phone&nat=us"
+      "https://randomuser.me/api/?results=120&inc=name,picture,dob,location,phone&nat=us"
     ).then(res => {
       let all = res.data.results;
       let us = [];
@@ -47,28 +48,52 @@ export default {
       title: "Chris Med | Vue-App",
       subtitle: "Random User Cards",
       copyright: "Christian Medina | Copyright 2018",
-      users: []
+      users: [],
+      search: ""
     };
+  },
+  computed: {
+    filteredByName() {
+      return this.users.filter(user => {
+        return user.fullName.includes(this.search);
+      });
+    }
   }
 };
 </script>
 
 <style lang="scss">
+@import "./scss/styles.scss";
+
 .app {
   width: 100%;
   min-height: 100vh;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 300px 1fr 100px;
+  grid-template-rows: 150px 60px 1fr 100px;
+  grid-gap: 2rem;
+}
+
+.search {
+  display: block;
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto 0;
+  padding: 0 1rem;
+  font-size: 1rem;
+  border: 0;
+  outline: 0;
+  border: 1px solid rgba(map-get($vars, accent), 0.75);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .Cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 320px);
+  grid-template-columns: repeat(auto-fit, minmax(320px, 340px));
   grid-gap: 1.5rem;
   justify-content: center;
   width: 90%;
   max-width: 1200px;
-  margin: -50px auto 50px;
+  margin: 0 auto 0;
 }
 </style>

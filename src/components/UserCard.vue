@@ -22,10 +22,6 @@
 <script>
 export default {
   props: {
-    users: {
-      type: Array,
-      required: true
-    },
     user: {
       type: Object,
       required: true
